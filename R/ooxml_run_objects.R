@@ -1,5 +1,6 @@
 # generics -----
 
+
 #' @export
 #' @title Convert officer objects to WordprocessingML
 #' @description Convert an object made with package officer
@@ -10,7 +11,6 @@
 #' @family functions for officer extensions
 #' @keywords internal
 to_wml <- function(x, add_ns = FALSE, ...) {
-  UseMethod("to_wml")
 }
 
 #' @export
@@ -178,6 +178,7 @@ to_wml.run_wordtext <- function(x, add_ns = FALSE, ...) {
 #' run_word_field(field = "Date \\@ \"MMMM d yyyy\"")
 #' @family run functions for reporting
 #' @family Word computed fields
+  UseMethod("to_wml")
 run_word_field <- function(field, prop = NULL, seqfield = NULL) {
 
   if(!is.null(seqfield)) {
@@ -252,6 +253,10 @@ to_wml.run_word_field <- function(x, add_ns = FALSE, ...) {
 #' chapter 4.3).
 #' @param tns separator to use between title number and table
 #' number. Default is "-".
+#' @ param rhd *restart heading depth*, a positive integer that species
+#' the title number depth after which numbering should be restarted.
+#' If specified, \code{tnd} must also be specified and \code{rhd} 
+#' must be equal or greater than \code{tnd}.
 #' @examples
 #' run_autonum()
 #' run_autonum(seq_id = "fig", pre_label = "fig. ")
@@ -263,7 +268,8 @@ to_wml.run_word_field <- function(x, add_ns = FALSE, ...) {
 run_autonum <- function(seq_id = "table", pre_label = "Table ", post_label = ": ",
                         bkm = NULL, bkm_all = FALSE, prop = NULL,
                         start_at = NULL,
-                        tnd = 0, tns = "-") {
+                        tnd = 0, tns = "-",
+			rhd = NULL) {
   bkm <- check_bookmark_id(bkm)
 
   stopifnot(!is.null(tnd),
@@ -272,7 +278,8 @@ run_autonum <- function(seq_id = "table", pre_label = "Table ", post_label = ": 
             sign(tnd)>-1,
             is.character(tns),
             is.null(start_at) || is.numeric(start_at),
-            inherits(prop, "fp_text") || is.null(prop)
+            inherits(prop, "fp_text") || is.null(prop),
+	    tnd<rhd
             )
   z <- list(
     seq_id = seq_id,
@@ -283,6 +290,7 @@ run_autonum <- function(seq_id = "table", pre_label = "Table ", post_label = ": 
     pr = prop,
     start_at = start_at,
     tnd = tnd, tns = tns
+    rhd = rhd
   )
   class(z) <- c("run_autonum", "run")
 
@@ -317,6 +325,12 @@ to_wml.run_autonum <- function(x, add_ns = FALSE, ...) {
 
   run_str_pre <- sprintf("<w:r>%s<w:t xml:space=\"preserve\">%s</w:t></w:r>", pr, x$pre_label)
   run_str_post <- sprintf("<w:r>%s<w:t xml:space=\"preserve\">%s</w:t></w:r>", pr, x$post_label)
+
+  if(!is.null(x$rhd)){
+	  seq_str <- paste0("SEQ ", x$seq_id, " \u005C* Arabic", " \\s ", x$rhd)
+  } else {
+	  seq_str <- paste0("SEQ ", x$seq_id, " \u005C* Arabic")
+  }
 
   seq_str <- paste0("SEQ ", x$seq_id, " \u005C* Arabic")
   if(!is.null(x$start_at) && is.numeric(x$start_at)){
@@ -626,7 +640,6 @@ section_columns <- function(widths = c(2.5,2.5), space = .25, sep = FALSE) {
 to_wml.section_columns <- function(x, add_ns = FALSE, ...) {
   widths <- x$widths * 20 * 72
   space <- x$space * 20 * 72
-
   columns_str_all_but_last <- sprintf("<w:col w:w=\"%.0f\" w:space=\"%.0f\"/>",
                                       widths[-length(widths)], space)
   columns_str_last <- sprintf("<w:col w:w=\"%.0f\"/>",
