@@ -1,6 +1,5 @@
 # generics -----
 
-
 #' @export
 #' @title Convert officer objects to WordprocessingML
 #' @description Convert an object made with package officer
@@ -11,6 +10,7 @@
 #' @family functions for officer extensions
 #' @keywords internal
 to_wml <- function(x, add_ns = FALSE, ...) {
+  UseMethod("to_wml")
 }
 
 #' @export
@@ -178,7 +178,6 @@ to_wml.run_wordtext <- function(x, add_ns = FALSE, ...) {
 #' run_word_field(field = "Date \\@ \"MMMM d yyyy\"")
 #' @family run functions for reporting
 #' @family Word computed fields
-  UseMethod("to_wml")
 run_word_field <- function(field, prop = NULL, seqfield = NULL) {
 
   if(!is.null(seqfield)) {
@@ -284,12 +283,13 @@ run_autonum <- function(seq_id = "table", pre_label = "Table ", post_label = ": 
   z <- list(
     seq_id = seq_id,
     pre_label = pre_label,
+
     post_label = post_label,
     bookmark = bkm,
     bookmark_all = bkm_all,
     pr = prop,
     start_at = start_at,
-    tnd = tnd, tns = tns
+    tnd = tnd, tns = tns,
     rhd = rhd
   )
   class(z) <- c("run_autonum", "run")
