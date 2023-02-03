@@ -278,7 +278,7 @@ run_autonum <- function(seq_id = "table", pre_label = "Table ", post_label = ": 
             is.character(tns),
             is.null(start_at) || is.numeric(start_at),
             inherits(prop, "fp_text") || is.null(prop),
-	    tnd<rhd
+	    tnd>=rhd
             )
   z <- list(
     seq_id = seq_id,
