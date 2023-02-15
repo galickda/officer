@@ -13,7 +13,8 @@ run_autonum(
   prop = NULL,
   start_at = NULL,
   tnd = 0,
-  tns = "-"
+  tns = "-",
+  rhd = NULL
 )
 }
 \arguments{
