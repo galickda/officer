@@ -332,7 +332,6 @@ to_wml.run_autonum <- function(x, add_ns = FALSE, ...) {
 	  seq_str <- paste0("SEQ ", x$seq_id, " \u005C* Arabic")
   }
 
-  seq_str <- paste0("SEQ ", x$seq_id, " \u005C* Arabic")
   if(!is.null(x$start_at) && is.numeric(x$start_at)){
     seq_str <- paste(seq_str, "\\r", as.integer(x$start_at))
   }
