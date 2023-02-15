@@ -45,6 +45,11 @@ chapter 4.3).}
 
 \item{tns}{separator to use between title number and table
 number. Default is "-".}
+
+\item{rhd}{\emph{restart heading depth}, a positive integer that species
+the title number depth after which numbering should be restarted.
+If specified, \code{tnd} must also be specified and \code{rhd}
+must be equal or greater than \code{tnd}.}
 }
 \description{
 Create an autonumbered chunk, i.e. a string

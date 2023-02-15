@@ -252,7 +252,7 @@ to_wml.run_word_field <- function(x, add_ns = FALSE, ...) {
 #' chapter 4.3).
 #' @param tns separator to use between title number and table
 #' number. Default is "-".
-#' @ param rhd *restart heading depth*, a positive integer that species
+#' @param rhd *restart heading depth*, a positive integer that species
 #' the title number depth after which numbering should be restarted.
 #' If specified, \code{tnd} must also be specified and \code{rhd} 
 #' must be equal or greater than \code{tnd}.
